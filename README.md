@@ -34,3 +34,72 @@ Please complete Part 1–2 as described in the [Google Slides](https://docs.goog
     year      = {2024}
 }
 ```
+
+# Part 1
+
+I choose jelly and snow for my simulation, which use `configs/jelly.json` and `configs/snow.json` as config respectivly.
+
+[Youtube](https://youtu.be/FdosllQtX_E)
+
+# Part 2
+
+## n_grid
+
+`n_grid`: 50 -> 25
+
+configs:
+- jelly: `configs/jelly_n_grid.json`
+- snow: `configs/snow_n_grid.json`
+
+| material | jelly | snow  |
+|---------:|:-----:|:-----:|
+|     psnr | 21.96 | 15.20 |
+
+The motion becomes smaller when n_grid decreases, but the motion last the same amount of time.
+
+## substeps
+
+`substep_dt`: 1e-4 -> 5e-5
+
+configs:
+- jelly: `configs/jelly_substep_dt.json`
+- snow: `configs/snow_substep_dt.json`
+
+| material | jelly | snow  |
+|---------:|:-----:|:-----:|
+|     psnr | 22.08 | 14.87 |
+
+Similar to `n_grid` the motion becomes smaller when substeps increases (`substep_dt` decreases), but the motion last the same amount of time.
+
+## grid_v_damping_scale
+
+`grid_v_damping_scale`: 0.9999 -> 0.999
+
+configs:
+- jelly: `configs/jelly_grid_v_damping_scale_down.json`
+- snow: `configs/snow_grid_v_damping_scale_down.json`
+
+| material | jelly | snow  |
+|---------:|:-----:|:-----:|
+|     psnr | 21.71 | 14.65 |
+
+When the damping scale decreses, the motion stops faster since it is damped more.
+
+## softening
+
+`softening`: 0.1 -> 0.01
+
+configs:
+- jelly: `configs/jelly_softening.json`
+- snow: `configs/snow_softening.json`
+- plasticine: `configs/plasticine_softening.json`
+
+| material | jelly | snow  | plasticine |
+|---------:|:-----:|:-----:|:----------:|
+|     psnr | 76.23 | 37.28 |    76.18   |
+
+Changing `softening` doesn't effect the result, overall the rendered motion are the same. Even the after trace code that `softening` is only used in `plasticine` material, it also doesn't effect `plasticine` reuslts.
+
+# BONUS
+
+I would make the material-related parameters as trainable parameters and record real world video as training data to finetune the exsisting model.
